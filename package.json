@@ -9,7 +9,7 @@
   "repository": "https://github.com/david-mitchell/biblia-api",
   "author": "Amanda Mitchell",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "dotenv": "^8.2.0",
     "jest": "^26.0.1",

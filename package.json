@@ -1,6 +1,6 @@
 {
   "name": "@david-mitchell/biblia-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Javascript wrapper for the Biblia API.",
   "main": "index.js",
   "files": [

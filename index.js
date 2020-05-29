@@ -210,7 +210,7 @@ const validateCompareOptions = createOptionsValidator({
   second: validateTypeOf('string'),
 });
 
-module.exports.createApi = ({ apiKey, fetch }) => {
+module.exports.createBibliaApiClient = ({ apiKey, fetch }) => {
   function createUrlTemplate(urlParts, ...names) {
     for (const name of names) {
       if (typeof name !== 'string') {

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 
-const { createApi } = require('..');
+const { createBibliaApiClient } = require('..');
 
 const renderUrlInputs = [
   {
@@ -114,7 +114,7 @@ describe.each(renderUrlInputs)(
         },
       });
 
-      const api = createApi({ apiKey: apiKey, fetch: mockedFetch });
+      const api = createBibliaApiClient({ apiKey: apiKey, fetch: mockedFetch });
 
       expect(await api[methodName](options)).toBe(expectedUrl);
     });
@@ -130,7 +130,7 @@ describe('integration tests', () => {
 
   describe('content', () => {
     test('txt', async () => {
-      const api = createApi({ apiKey, fetch });
+      const api = createBibliaApiClient({ apiKey, fetch });
 
       expect(
         await api.content({
@@ -142,7 +142,7 @@ describe('integration tests', () => {
     });
 
     test('html', async () => {
-      const api = createApi({ apiKey, fetch });
+      const api = createBibliaApiClient({ apiKey, fetch });
 
       expect(
         await api.content({
@@ -155,7 +155,7 @@ describe('integration tests', () => {
   });
 
   test('image', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     const result = await api.image({ bible: 'leb' });
 
@@ -164,7 +164,7 @@ describe('integration tests', () => {
   });
 
   test('search', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(
       await api.search({
@@ -182,7 +182,7 @@ describe('integration tests', () => {
   });
 
   test('findBible', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(await api.findBible({ bible: 'leb' })).toMatchObject({
       bibles: [
@@ -212,7 +212,7 @@ describe('integration tests', () => {
   });
 
   test('find', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(await api.find({ query: 'Lexham' })).toMatchObject({
       bibles: [
@@ -242,7 +242,7 @@ describe('integration tests', () => {
   });
 
   test('parse', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(await api.parse({ passage: 'Genesis 1:1' })).toMatchObject({
       passage: 'Genesis 1:1',
@@ -258,7 +258,7 @@ describe('integration tests', () => {
   });
 
   test('scan', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(
       await api.scan({
@@ -270,7 +270,7 @@ describe('integration tests', () => {
   });
 
   test('tag', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(
       await api.tag({
@@ -283,7 +283,7 @@ describe('integration tests', () => {
   });
 
   test('compare', async () => {
-    const api = createApi({ apiKey, fetch });
+    const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(
       await api.compare({ first: 'Genesis 1:2', second: 'Genesis 1:1-10' })

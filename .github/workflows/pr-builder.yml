@@ -13,6 +13,8 @@ jobs:
           node-version: 12
       - name: Install dependencies
         run: yarn --frozen-lockfile --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.PRIVATE_PACKAGE_TOKEN}}
       - name: Prettier check
         run: yarn prettier --check "./**/*.{js,json,md}"
       - name: Lint

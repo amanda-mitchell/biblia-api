@@ -3,16 +3,16 @@
 
 
 "@amanda-mitchell/node-project-scripts@^2.0.0":
-  version "2.0.0"
-  resolved "https://npm.pkg.github.com/download/@amanda-mitchell/node-project-scripts/2.0.0/3db776e2e6bfaa4ef4b903925113aa96d437f12da0f97d1bbd3a659197ca6017#613eb1852e0b033d75a740bddc5b509918a900e1"
-  integrity sha512-oAkt1h6OjCYsOjq57rXalq4UzlzGFObZT0QQN4MZo+bfpw7LIw7uf8TJECcEzwpuflrlCxnrYERYC9ZUhxXgPw==
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@amanda-mitchell/node-project-scripts/-/node-project-scripts-2.2.0.tgz#7ca31d65787c13f6c54091cc880b874e879027e4"
+  integrity sha512-RAee0Nw/0RfYOnfNdcQsF1pxyqVUW61lwX0Y6aaB7ntqn5GMBueu72cH8EL1x7qHVrw/F2RaB2ggrmFS4/v+wQ==
   dependencies:
     "@commitlint/cli" "^11.0.0"
     "@commitlint/config-conventional" "^11.0.0"
-    eslint "^7.12.1"
+    eslint "^7.13.0"
     husky "^4.3.0"
     lint-staged "^10.5.1"
-    pkg-dir "^4.2.0"
+    pkg-dir "^5.0.0"
     prettier "2.1.2"
     semantic-release "^17.2.2"
 
@@ -2542,10 +2542,10 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.0.0.tgz#21fdc8fbcd9c795cc0321f0563702095751511a8"
   integrity sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
 
-eslint@^7.12.1:
-  version "7.12.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.12.1.tgz#bd9a81fa67a6cfd51656cdb88812ce49ccec5801"
-  integrity sha512-HlMTEdr/LicJfN08LB3nM1rRYliDXOmfoO4vj39xN6BLpFzF00hbwBoqHk8UcJ2M/3nlARZWy/mslvGEuZFvsg==
+eslint@^7.13.0:
+  version "7.13.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.13.0.tgz#7f180126c0dcdef327bfb54b211d7802decc08da"
+  integrity sha512-uCORMuOO8tUzJmsdRtrvcGq5qposf7Rw0LwkTJkoDbOycVQtQjmnhZSuLQnozLE4TmAzlMVV45eCHmQ1OpDKUQ==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@eslint/eslintrc" "^0.2.1"
@@ -5946,6 +5946,13 @@ pkg-dir@^4.2.0:
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
+
+pkg-dir@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-5.0.0.tgz#a02d6aebe6ba133a928f74aec20bafdfe6b8e760"
+  integrity sha512-NPE8TDbzl/3YQYY7CSS228s3g2ollTFnc+Qi3tqmqJp9Vg2ovUpixcJEo2HJScN2Ez+kEaal6y70c0ehqJBJeA==
+  dependencies:
+    find-up "^5.0.0"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"

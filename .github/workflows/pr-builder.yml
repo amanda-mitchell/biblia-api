@@ -22,10 +22,10 @@ jobs:
           BIBLIA_API_KEY: ${{ secrets.BIBLIA_API_KEY }}
         run: yarn jest
       - name: Merge
-        if: ${{ github.event.pull_request.user.login == 'dependabot-preview' }}
+        if: ${{ github.event.pull_request.user.login == 'dependabot-preview[bot]' }}
         run: 'echo dependabot'
       - name: Skip merge
-        if: ${{ github.event.pull_request.user.login != 'dependabot-preview' }}
+        if: ${{ github.event.pull_request.user.login != 'dependabot-preview[bot]' }}
         run: 'echo $USER_LOGIN'
         env:
           USER_LOGIN: ${{ github.event.pull_request.user.login }}

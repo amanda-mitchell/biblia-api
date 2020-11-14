@@ -26,4 +26,6 @@ jobs:
         run: 'echo dependabot'
       - name: Skip merge
         if: ${{ github.event.pull_request.user.login != 'dependabot' }}
-        run: 'echo not dependabot'
+        run: 'echo $USER_LOGIN'
+        env:
+          USER_LOGIN: ${{ github.event.pull_request.user.login }}

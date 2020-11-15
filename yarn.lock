@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@amanda-mitchell/node-project-scripts@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@amanda-mitchell/node-project-scripts/-/node-project-scripts-2.3.0.tgz#5efa885635a344e4019c949c3d4607fe6bbe70ff"
-  integrity sha512-70qLXH1R4FpSBwnyUx+gtMdHF4C3rCV7W3VD4aLEC2dueCUQEJnqUKAfpkRA9gclmquw5+tuUBE225BBRyaAjA==
+"@amanda-mitchell/node-project-scripts@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@amanda-mitchell/node-project-scripts/-/node-project-scripts-2.4.1.tgz#a71deda71420ce58689767be15b1b3edb1882cfc"
+  integrity sha512-9sI9gzVaH5Fu3liI5OIToYY1K0+n2gNSxK6zeE4MrgTsBCGLGQej/rmyJW9myOk7qioZI5pE964c/ltJUamKRw==
   dependencies:
+    "@amanda-mitchell/semantic-release-notify-dependabot" "^1.0.0"
     "@amanda-mitchell/semantic-release-npm-multiple" "^2.1.1"
     "@commitlint/cli" "^11.0.0"
     "@commitlint/config-conventional" "^11.0.0"
@@ -16,6 +17,13 @@
     pkg-dir "^5.0.0"
     prettier "2.1.2"
     semantic-release "^17.2.2"
+
+"@amanda-mitchell/semantic-release-notify-dependabot@^1.0.0":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@amanda-mitchell/semantic-release-notify-dependabot/-/semantic-release-notify-dependabot-1.0.1.tgz#a52d2643796bea9e826892c824c21ff5dae42f9a"
+  integrity sha512-1SXCXNY5JCKa8wlBnCEO0UrCkLgLkwOx1OTf6xhCDP0sgcdnZja3RW6MPWlbZzziHPQN+jjxg9Jwv1dcjggEAA==
+  dependencies:
+    node-fetch "^2.6.1"
 
 "@amanda-mitchell/semantic-release-npm-multiple@^2.1.1":
   version "2.1.1"

@@ -6,6 +6,9 @@
   "files": [
     "index.js"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": "https://github.com/amanda-mitchell/biblia-api",
   "author": "Amanda Mitchell",
   "license": "MIT",

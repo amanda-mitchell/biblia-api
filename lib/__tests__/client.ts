@@ -1,9 +1,23 @@
-require('dotenv').config();
-const fetch = require('node-fetch');
+import { config as configureEnvironment } from 'dotenv';
+import fetch from 'node-fetch';
+import type { RequestInfo, Response } from 'node-fetch';
+import { createBibliaApiClient } from '../client';
 
-const { createBibliaApiClient } = require('..');
+configureEnvironment();
 
-const renderUrlInputs = [
+type BibliaApiClient = ReturnType<typeof createBibliaApiClient>;
+type ClientMethodNames = keyof BibliaApiClient & string;
+
+type UrlTestRow = {
+  [Key in ClientMethodNames]: {
+    methodName: Key;
+    options: Parameters<BibliaApiClient[Key]>[0];
+    expectedUrl: string;
+    contentType: 'application/json' | 'text/plain' | 'text/html' | 'image/jpeg';
+  };
+}[ClientMethodNames];
+
+const renderUrlInputs: UrlTestRow[] = [
   {
     methodName: 'content',
     options: {
@@ -23,11 +37,13 @@ const renderUrlInputs = [
     },
     expectedUrl:
       'https://api.biblia.com/v1/bible/content/leb.html?passage=Genesis%201%3A1&style=fullyFormatted&formatting=abc&redLetter=true&footnotes=true&citation=true&paragraphs=true&fullText=true&header=header&eachVerse=eachVerse&footer=footer&key=baz',
+    contentType: 'text/html',
   },
   {
     methodName: 'tableOfContents',
     options: { bible: 'leb' },
     expectedUrl: 'https://api.biblia.com/v1/bible/contents/leb?key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'search',
@@ -43,40 +59,47 @@ const renderUrlInputs = [
     },
     expectedUrl:
       'https://api.biblia.com/v1/bible/search/leb?query=something&mode=fuzzy&passages=Genesis%201&preview=text&sort=passage&start=0&limit=20&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'findBible',
     options: { bible: 'leb' },
     expectedUrl: 'https://api.biblia.com/v1/bible/find/leb?key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'find',
     options: { query: 'hi', strictQuery: false, start: 0, limit: 10 },
     expectedUrl:
       'https://api.biblia.com/v1/bible/find?query=hi&strictQuery=false&start=0&limit=10&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'image',
     options: { bible: 'leb' },
     expectedUrl: 'https://api.biblia.com/v1/bible/image/leb?key=baz',
+    contentType: 'image/jpeg',
   },
   {
     methodName: 'parse',
     options: { passage: 'Genesis 1:1', style: 'long' },
     expectedUrl:
       'https://api.biblia.com/v1/bible/parse?passage=Genesis%201%3A1&style=long&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'scan',
     options: { text: 'A sentence or two.', tagChapters: true },
     expectedUrl:
       'https://api.biblia.com/v1/bible/scan?text=A%20sentence%20or%20two.&tagChapters=true&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'tag',
     options: { text: 'A sentence or two', tagFormat: 'abc', tagChapters: true },
     expectedUrl:
       'https://api.biblia.com/v1/bible/tag?text=A%20sentence%20or%20two&tagFormat=abc&tagChapters=true&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'tag',
@@ -87,42 +110,62 @@ const renderUrlInputs = [
     },
     expectedUrl:
       'https://api.biblia.com/v1/bible/tag?url=https%3A%2F%2Fexample.com%2F&tagFormat=abc&tagChapters=true&key=baz',
+    contentType: 'application/json',
   },
   {
     methodName: 'compare',
     options: { first: 'Geneis 1:1', second: 'Genesis 1:2' },
     expectedUrl:
       'https://api.biblia.com/v1/bible/compare?first=Geneis%201%3A1&second=Genesis%201%3A2&key=baz',
+    contentType: 'application/json',
   },
 ];
 
 describe.each(renderUrlInputs)(
   'render url',
-  ({ methodName, options, expectedUrl }) => {
+  ({ methodName, options, expectedUrl, contentType }: UrlTestRow) => {
     test(methodName, async () => {
       const apiKey = 'baz';
 
-      const mockedFetch = async url => ({
-        status: 200,
-        headers: {
-          get() {
-            return 'text/plain';
+      let renderedUrl = null;
+
+      const mockedFetch = async (url: RequestInfo) => {
+        renderedUrl = url;
+
+        return ({
+          status: 200,
+          headers: {
+            get() {
+              return contentType;
+            },
           },
-        },
-        async text() {
-          return url;
-        },
-      });
+          async text() {
+            return '';
+          },
+          async json() {
+            return {};
+          },
+          async blob() {
+            return null;
+          },
+        } as unknown) as Response;
+      };
+
+      mockedFetch.isRedirect = () => {
+        throw new Error();
+      };
 
       const api = createBibliaApiClient({ apiKey: apiKey, fetch: mockedFetch });
 
-      expect(await api[methodName](options)).toBe(expectedUrl);
+      await api[methodName](options as any);
+
+      expect(renderedUrl).toBe(expectedUrl);
     });
   }
 );
 
 describe('integration tests', () => {
-  const apiKey = process.env['BIBLIA_API_KEY'];
+  const apiKey = process.env['BIBLIA_API_KEY']!;
 
   // We can't perform integration tests unless we have
   // an API key, which should not be stored in the repository.
@@ -276,7 +319,7 @@ describe('integration tests', () => {
       await api.tag({
         text: 'The quick brown Genesis 1:1 jumps over the lazy dog.',
       })
-    ).toMatchObject({
+    ).toEqual({
       text:
         'The quick brown <a href="https://ref.ly/Gen1.1">Genesis 1:1</a> jumps over the lazy dog.',
     });

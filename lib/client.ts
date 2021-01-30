@@ -47,7 +47,7 @@ function expectContentType(
     2
   )[0];
 
-  if (!expectedTypes.some(x => contentType === x)) {
+  if (!expectedTypes.includes(contentType)) {
     throw new Error(`Unexpected response Content-Type: ${contentType}`);
   }
 }

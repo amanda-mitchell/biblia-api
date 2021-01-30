@@ -10,6 +10,7 @@
     "dist/**/*.d.ts",
     "!**/__tests__"
   ],
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
   },

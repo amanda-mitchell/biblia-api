@@ -1,9 +1,33 @@
-import type fetchMethod from 'node-fetch';
-import { Response } from 'node-fetch';
 const baseUrl = 'https://api.biblia.com/v1/';
 
 export const usageAcknowledgment = `<a href="https://biblia.com/"><img src="https://api.biblia.com/v1/PoweredByBiblia_small.png" alt="Powered by Biblia" /></a>
 This site uses the <a href="https://biblia.com/">Biblia</a> web services from <a href="https://www.logos.com/">Logos Bible Software</a>.`;
+
+// Different implementations of fetch have subtle incompatibilities with
+// each other: in particular, node-fetch is missing a few bits that are
+// described in the official spec. In order to be compatible with as many
+// fetch implementations as possible, we declare the precise API surface
+// that this library requires.
+type FetchMethod<TBlob> = (
+  input: string,
+  init?: RequestInit
+) => Promise<Response<TBlob>>;
+
+type RequestInit = { method: string; headers: Record<string, string> };
+type Response<TBlob> = {
+  status: number;
+  headers: {
+    get: (header: string) => string | null;
+  };
+  json: <T>() => Promise<T>;
+  text: () => Promise<string>;
+  blob: () => Promise<TBlob>;
+};
+
+type ClientOptions<TBlob> = {
+  apiKey: string;
+  fetch: FetchMethod<TBlob>;
+};
 
 type Validator<T> = (value: any) => value is T;
 type ValidationFactory<T> = (optionName: string) => Validator<T>;
@@ -14,7 +38,10 @@ type OptionalValidationFactory<T> = ValidationFactory<T> & {
 
 type ValidatorType<T> = T extends ValidationFactory<infer R> ? R : never;
 
-function expectContentType(response: Response, ...expectedTypes: string[]) {
+function expectContentType(
+  response: Response<any>,
+  ...expectedTypes: string[]
+) {
   const contentType = (response.headers.get('Content-Type') || '').split(
     ';',
     2
@@ -26,34 +53,34 @@ function expectContentType(response: Response, ...expectedTypes: string[]) {
 }
 
 async function expectJsonResult<TResult extends Record<string, unknown>>(
-  response: Response
+  response: Response<any>
 ) {
   expectContentType(response, 'application/json');
 
-  return (await response.json()) as TResult;
+  return await response.json<TResult>();
 }
 
 function createJsonResultParser<TResult extends Record<string, unknown>>() {
-  return (response: Response) => expectJsonResult<TResult>(response);
+  return (response: Response<any>) => expectJsonResult<TResult>(response);
 }
 
-async function expectTextResult(response: Response) {
+async function expectTextResult(response: Response<any>) {
   expectContentType(response, 'text/html', 'text/plain');
 
   return await response.text();
 }
 
-async function expectImageResult(response: Response) {
+async function expectImageResult<TBlob>(response: Response<TBlob>) {
   expectContentType(response, 'image/jpeg');
 
   return await response.blob();
 }
 
-function createEndpoint<TResult, TOptions>(
-  fetch: typeof fetchMethod,
+function createEndpoint<TResult, TOptions, TBlob>(
+  fetch: FetchMethod<TBlob>,
   validateOptions: Validator<TOptions>,
   renderUrl: (options: TOptions) => string,
-  transformResponse: (response: Response) => Promise<TResult>
+  transformResponse: (response: Response<TBlob>) => Promise<TResult>
 ) {
   return async (options: TOptions) => {
     validateOptions(options);
@@ -311,15 +338,13 @@ const validateCompareOptions = createOptionsValidator({
   second: validateIsString,
 });
 
-type ClientOptions = {
-  apiKey: string;
-  fetch: typeof fetchMethod;
-};
-
 type BibleBook = string;
 type FullBibleReference = string;
 
-export function createBibliaApiClient({ apiKey, fetch }: ClientOptions) {
+export function createBibliaApiClient<TBlob>({
+  apiKey,
+  fetch,
+}: ClientOptions<TBlob>) {
   type BibleName =
     | (typeof bibleVersionValidator extends OptionalValidationFactory<infer T>
         ? T

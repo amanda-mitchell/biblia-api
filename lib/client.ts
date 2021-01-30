@@ -262,6 +262,8 @@ const availableBibles = [
   'ylt',
 ] as const;
 
+export type AvailableBible = typeof availableBibles[number];
+
 const bibleVersionValidator = validateEnumMembership(...availableBibles);
 
 const validateBibleContentOptions = createOptionsValidator({

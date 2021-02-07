@@ -401,8 +401,8 @@ export function createBibliaApiClient<TBlob>({
     passage: FullBibleReference;
     parts: {
       book: BibleBook;
-      chapter: number;
-      verse: number;
+      chapter?: number;
+      verse?: number;
       endBook?: BibleBook;
       endChapter?: number;
       endVerse?: number;

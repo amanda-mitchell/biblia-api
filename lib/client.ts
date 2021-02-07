@@ -399,7 +399,14 @@ export function createBibliaApiClient<TBlob>({
 
   type ParsedPassage = {
     passage: FullBibleReference;
-    parts: { book: BibleBook; chapter: number; endChapter: number };
+    parts: {
+      book: BibleBook;
+      chapter: number;
+      verse: number;
+      endBook?: BibleBook;
+      endChapter?: number;
+      endVerse?: number;
+    };
     index: number;
     length: number;
   };

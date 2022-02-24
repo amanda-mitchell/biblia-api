@@ -19,7 +19,7 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
-    "@amanda-mitchell/node-project-scripts": "^2.37.2",
+    "@amanda-mitchell/node-project-scripts": "^3.4.0",
     "@types/node-fetch": "^2.5.8",
     "dotenv": "^16.0.0",
     "node-fetch": "^2.6.1"

@@ -1,9 +1,7 @@
-import { config as configureEnvironment } from 'dotenv';
+import 'dotenv/config';
 import fetch from 'node-fetch';
 import type { RequestInfo, Response } from 'node-fetch';
 import { createBibliaApiClient } from '../client';
-
-configureEnvironment();
 
 type BibliaApiClient = ReturnType<typeof createBibliaApiClient>;
 type ClientMethodNames = keyof BibliaApiClient & string;
@@ -132,7 +130,7 @@ describe.each(renderUrlInputs)(
       const mockedFetch = async (url: RequestInfo) => {
         renderedUrl = url;
 
-        return ({
+        return {
           status: 200,
           headers: {
             get() {
@@ -148,7 +146,7 @@ describe.each(renderUrlInputs)(
           async blob() {
             return null;
           },
-        } as unknown) as Response;
+        } as unknown as Response;
       };
 
       mockedFetch.isRedirect = () => {
@@ -320,8 +318,7 @@ describe('integration tests', () => {
         text: 'The quick brown Genesis 1:1 jumps over the lazy dog.',
       })
     ).toEqual({
-      text:
-        'The quick brown <a href="https://ref.ly/Gen1.1">Genesis 1:1</a> jumps over the lazy dog.',
+      text: 'The quick brown <a href="https://ref.ly/Gen1.1">Genesis 1:1</a> jumps over the lazy dog.',
     });
   });
 

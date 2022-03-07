@@ -24,4 +24,5 @@ jobs:
       - name: Test
         env:
           BIBLIA_API_KEY: ${{ secrets.BIBLIA_API_KEY }}
+          NODE_OPTIONS: --experimental-vm-modules
         run: yarn jest dist

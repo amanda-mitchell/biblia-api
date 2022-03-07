@@ -123,11 +123,9 @@ function createOptionsValidator<T extends Validators>(validators: T) {
   type Recombine<T> = { [Key in keyof T]: T[Key] };
 
   type Options = Recombine<
-    ToOptional<
-      {
-        [Key in keyof T & string]: ValidatorType<T[Key]>;
-      }
-    >
+    ToOptional<{
+      [Key in keyof T & string]: ValidatorType<T[Key]>;
+    }>
   >;
 
   const validateFunctions = Object.assign(

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import fetch from 'node-fetch';
 import type { RequestInfo, Response } from 'node-fetch';
-import { createBibliaApiClient } from '../client';
+import { createBibliaApiClient } from '../client.js';
 
 type BibliaApiClient = ReturnType<typeof createBibliaApiClient>;
 type ClientMethodNames = keyof BibliaApiClient & string;

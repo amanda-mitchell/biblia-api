@@ -19,7 +19,7 @@ type Response<TBlob> = {
   headers: {
     get: (header: string) => string | null;
   };
-  json: <T>() => Promise<T>;
+  json: () => Promise<unknown>;
   text: () => Promise<string>;
   blob: () => Promise<TBlob>;
 };
@@ -57,7 +57,7 @@ async function expectJsonResult<TResult extends Record<string, unknown>>(
 ) {
   expectContentType(response, 'application/json');
 
-  return await response.json<TResult>();
+  return (await response.json()) as TResult;
 }
 
 function createJsonResultParser<TResult extends Record<string, unknown>>() {

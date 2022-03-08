@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@amanda-mitchell/node-project-scripts@^3.10.2":
-  version "3.10.2"
-  resolved "https://registry.yarnpkg.com/@amanda-mitchell/node-project-scripts/-/node-project-scripts-3.10.2.tgz#7ee8a2021f244788820c2f05e5e82cd7e0856981"
-  integrity sha512-A3rV1rWTB0zN3ZI5xVZgaC8lZFCEMyQCx5BiPBb75dYMQU18t11FhwphNm/kKuImLysOBxq+X/8eH7TpNJj5MA==
+"@amanda-mitchell/node-project-scripts@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@amanda-mitchell/node-project-scripts/-/node-project-scripts-3.11.0.tgz#b37cc2bf55a7390394581d6071b3bf2d4779e666"
+  integrity sha512-2x8wHZOESVeGkyqxI0nnVI95pErzqNs8JDYEth7haut3RBaxQT8qY17tTKYnXQaPgoDK43/+zfFkVLwX+TqR3w==
   dependencies:
     "@amanda-mitchell/semantic-release-npm-multiple" "^3.0.0"
     "@commitlint/cli" "^16.0.0"
@@ -1440,14 +1440,6 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.1.tgz#283f669ff76d7b8260df8ab7a4262cc83d988256"
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
-
-"@types/node-fetch@^2.5.8":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.6.1.tgz#8f127c50481db65886800ef496f20bbf15518975"
-  integrity sha512-oMqjURCaxoSIsHSr1E47QHzbmzNR5rK8McHuNb11BOM9cHcIK3Avy0s/b2JlXHoQGTYS3NsvWzV1M0iK7l0wbA==
-  dependencies:
-    "@types/node" "*"
-    form-data "^3.0.0"
 
 "@types/node@*", "@types/node@>= 8":
   version "14.14.8"

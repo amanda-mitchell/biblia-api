@@ -260,7 +260,7 @@ const availableBibles = [
   'ylt',
 ] as const;
 
-export type AvailableBible = typeof availableBibles[number];
+export type AvailableBible = (typeof availableBibles)[number];
 
 const bibleVersionValidator = validateEnumMembership(...availableBibles);
 

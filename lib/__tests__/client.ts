@@ -159,7 +159,7 @@ describe.each(renderUrlInputs)(
 
       expect(renderedUrl).toBe(expectedUrl);
     });
-  }
+  },
 );
 
 describe('integration tests', () => {
@@ -178,7 +178,7 @@ describe('integration tests', () => {
           passage: 'Genesis 1:1',
           format: 'txt',
           bible: 'leb',
-        })
+        }),
       ).toBe('In the beginning, God created the heavens and the earth—');
     });
 
@@ -190,7 +190,7 @@ describe('integration tests', () => {
           passage: 'Genesis 1:1',
           format: 'html',
           bible: 'leb',
-        })
+        }),
       ).toContain('In the beginning, God created the heavens and the earth');
     });
   });
@@ -216,7 +216,7 @@ describe('integration tests', () => {
         preview: 'none',
         start: 0,
         limit: 1,
-      })
+      }),
     ).toMatchObject({
       results: [{ title: 'Genesis 1:1' }],
     });
@@ -304,7 +304,7 @@ describe('integration tests', () => {
     expect(
       await api.scan({
         text: 'The quick brown Genesis 1:1 jumps over the lazy dog.',
-      })
+      }),
     ).toMatchObject({
       results: [{ passage: 'Genesis 1:1', textIndex: 16, textLength: 11 }],
     });
@@ -316,7 +316,7 @@ describe('integration tests', () => {
     expect(
       await api.tag({
         text: 'The quick brown Genesis 1:1 jumps over the lazy dog.',
-      })
+      }),
     ).toEqual({
       text: 'The quick brown <a href="https://ref.ly/Gen1.1">Genesis 1:1</a> jumps over the lazy dog.',
     });
@@ -326,7 +326,7 @@ describe('integration tests', () => {
     const api = createBibliaApiClient({ apiKey, fetch });
 
     expect(
-      await api.compare({ first: 'Genesis 1:2', second: 'Genesis 1:1-10' })
+      await api.compare({ first: 'Genesis 1:2', second: 'Genesis 1:1-10' }),
     ).toMatchObject({
       after: false,
       before: false,

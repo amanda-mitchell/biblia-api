@@ -10,7 +10,7 @@ This site uses the <a href="https://biblia.com/">Biblia</a> web services from <a
 // that this library requires.
 type FetchMethod<TBlob> = (
   input: string,
-  init?: RequestInit
+  init?: RequestInit,
 ) => Promise<Response<TBlob>>;
 
 type RequestInit = { method: string; headers: Record<string, string> };
@@ -44,7 +44,7 @@ function expectContentType(
 ) {
   const contentType = (response.headers.get('Content-Type') || '').split(
     ';',
-    2
+    2,
   )[0];
 
   if (!expectedTypes.includes(contentType)) {
@@ -53,7 +53,7 @@ function expectContentType(
 }
 
 async function expectJsonResult<TResult extends Record<string, unknown>>(
-  response: Response<any>
+  response: Response<any>,
 ) {
   expectContentType(response, 'application/json');
 
@@ -80,7 +80,7 @@ function createEndpoint<TResult, TOptions, TBlob>(
   fetch: FetchMethod<TBlob>,
   validateOptions: Validator<TOptions>,
   renderUrl: (options: TOptions) => string,
-  transformResponse: (response: Response<TBlob>) => Promise<TResult>
+  transformResponse: (response: Response<TBlob>) => Promise<TResult>,
 ) {
   return async (options: TOptions) => {
     validateOptions(options);
@@ -132,7 +132,7 @@ function createOptionsValidator<T extends Validators>(validators: T) {
     {},
     ...smartEntries(validators).map(([key, createValidator]) => ({
       [key]: createValidator(key),
-    }))
+    })),
   ) as OptionsValidators;
 
   return function validate(options: Options): options is Options {
@@ -177,12 +177,12 @@ function allowOptional<T>(fn: ValidationFactory<T>) {
 function validateEnumMembership<T extends string[]>(...values: T) {
   const valuesHash = Object.assign(
     {},
-    ...values.map(value => ({ [value.toLowerCase()]: true }))
+    ...values.map(value => ({ [value.toLowerCase()]: true })),
   ) as { [Key: string]: boolean };
 
   return allowOptional(optionName => {
     const errorMessage = `Option ${optionName} must be one of ${values.join(
-      ', '
+      ', ',
     )}.`;
 
     return function validate(value): value is T[number] {
@@ -278,7 +278,7 @@ const validateBibleContentOptions = createOptionsValidator({
     'orationOneParagraph',
     'orationOneVersePerLine',
     'orationBibleParagraphs',
-    'fullyFormattedWithFootnotes'
+    'fullyFormattedWithFootnotes',
   ).optional,
   formatting: validateIsString.optional,
   redLetter: validateIsBoolean.optional,
@@ -457,11 +457,11 @@ export function createBibliaApiClient<TBlob>({
     const beginning = baseUrl + urlParts[0];
     const namesHash = Object.assign(
       {},
-      ...names.map(name => ({ [name]: true }))
+      ...names.map(name => ({ [name]: true })),
     ) as Record<string, boolean>;
 
     return function renderUrl(
-      options: Record<string, number | boolean | string | undefined>
+      options: Record<string, number | boolean | string | undefined>,
     ) {
       const path = names
         .map((name, index) => {
@@ -477,12 +477,12 @@ export function createBibliaApiClient<TBlob>({
       const queryParameters = smartEntries(options)
         .filter(
           (entry): entry is [string, number | string | boolean] =>
-            !namesHash[entry[0]] && entry[1] !== undefined
+            !namesHash[entry[0]] && entry[1] !== undefined,
         )
         .concat([['key', apiKey]])
         .map(
           ([key, value]) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+            `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
         )
         .join('&');
 
@@ -495,61 +495,61 @@ export function createBibliaApiClient<TBlob>({
       fetch,
       validateBibleContentOptions,
       createUrlTemplate`bible/content/${'bible'}.${'format'}`,
-      expectTextResult
+      expectTextResult,
     ),
     tableOfContents: createEndpoint(
       fetch,
       validateSpecificBibleOptions,
       createUrlTemplate`bible/contents/${'bible'}`,
-      createJsonResultParser<TableOfContentsResponse>()
+      createJsonResultParser<TableOfContentsResponse>(),
     ),
     search: createEndpoint(
       fetch,
       validateSearchOptions,
       createUrlTemplate`bible/search/${'bible'}`,
-      createJsonResultParser<SearchResponse>()
+      createJsonResultParser<SearchResponse>(),
     ),
     findBible: createEndpoint(
       fetch,
       validateSpecificBibleOptions,
       createUrlTemplate`bible/find/${'bible'}`,
-      createJsonResultParser<FindBiblesResponse>()
+      createJsonResultParser<FindBiblesResponse>(),
     ),
     find: createEndpoint(
       fetch,
       validateFindOptions,
       createUrlTemplate`bible/find`,
-      createJsonResultParser<FindBiblesResponse>()
+      createJsonResultParser<FindBiblesResponse>(),
     ),
     image: createEndpoint(
       fetch,
       validateSpecificBibleOptions,
       createUrlTemplate`bible/image/${'bible'}`,
-      expectImageResult
+      expectImageResult,
     ),
     parse: createEndpoint(
       fetch,
       validateParseOptions,
       createUrlTemplate`bible/parse`,
-      createJsonResultParser<ParseResponse>()
+      createJsonResultParser<ParseResponse>(),
     ),
     scan: createEndpoint(
       fetch,
       validateScanOptions,
       createUrlTemplate`bible/scan`,
-      createJsonResultParser<ScanResponse>()
+      createJsonResultParser<ScanResponse>(),
     ),
     tag: createEndpoint(
       fetch,
       validateTagOptions,
       createUrlTemplate`bible/tag`,
-      createJsonResultParser<TagResponse>()
+      createJsonResultParser<TagResponse>(),
     ),
     compare: createEndpoint(
       fetch,
       validateCompareOptions,
       createUrlTemplate`bible/compare`,
-      createJsonResultParser<CompareResponse>()
+      createJsonResultParser<CompareResponse>(),
     ),
   };
 }
